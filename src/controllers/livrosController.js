@@ -15,7 +15,7 @@ class LivroController {
 
     livros
       .findById(id)
-      .populate("autor", "nome")
+      .populate("autor")
       .exec((err, livros) => {
         if (err) {
           res
@@ -65,20 +65,28 @@ class LivroController {
     });
   };
 
-  static listarLivroPorEditora = (req, res) => {
-    const editora = req.query.editora;
+  // static listarLivroPorEditora = (req, res) => {
+  //   const editora = req.query.editora;
 
-    livros.find({ editora: editora }, {}, (err, livros) => {
-      res.status(200).send(livros);
-    });
-  };
+  //   livros.find({ editora: editora }, {}, (err, livros) => {
+  //     res.status(200).send(livros);
+  //   });
+  // };
 
-  static listarLivroPorAutor = (req, res) => {
-    const autor = req.query.autor;
-
-    livros.find({ autor: autor }, {}, (err, livros) => {
-      res.status(200).send(livros);
-    });
+  static listarLivroPorBusca = (req, res) => {
+    if (req.query.autor) {
+      const autor = req.query.autor;
+  
+      livros.find({ autor: autor }, {}, (err, livros) => {
+        res.status(200).send(livros);
+      });
+    } else if (req.query.ano_publicacao) {
+      const ano_publicacao = req.query.ano_publicacao;
+  
+      livros.find({ ano_publicacao: ano_publicacao }, {}, (err, livros) => {
+        res.status(200).send(livros);
+      });
+    }
   };
 }
 
